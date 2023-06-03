@@ -2,6 +2,7 @@ package view;
 
 import javax.swing.*;
 import java.awt.*;
+import java.util.ResourceBundle;
 
 public class ViewMain extends JFrame {
 
@@ -29,6 +30,8 @@ public class ViewMain extends JFrame {
         listResultsModel = new DefaultListModel<>();
         listResults.setModel(listResultsModel);
 
+        checkBoxSaveFindings.setSelected(true);
+
         setContentPane(panelMain);
         setTitle("Mersenne");
         setPreferredSize(new Dimension(560, 302));
@@ -39,9 +42,13 @@ public class ViewMain extends JFrame {
 
     }
 
-    public ViewMain() {
+    public ViewMain(ResourceBundle resourceBundleI8n) {
 
         SwingUtilities.invokeLater(this::init);
+
+        buttonStartStop.addActionListener(actionEvent -> {
+
+        });
 
     }
 

@@ -54,7 +54,7 @@
                 <properties>
                   <horizontalAlignment value="0"/>
                   <horizontalTextPosition value="0"/>
-                  <text resource-bundle="i8n/i8n" key="resultList"/>
+                  <text resource-bundle="i8n" key="resultList"/>
                 </properties>
               </component>
             </children>
@@ -84,7 +84,7 @@
                 <properties>
                   <horizontalAlignment value="0"/>
                   <horizontalTextPosition value="0"/>
-                  <text resource-bundle="i8n/i8n" key="githubUrl"/>
+                  <text resource-bundle="i8n" key="githubUrl"/>
                 </properties>
               </component>
             </children>
@@ -128,7 +128,7 @@
                             <properties>
                               <horizontalAlignment value="0"/>
                               <horizontalTextPosition value="0"/>
-                              <text resource-bundle="i8n/i8n" key="timeToRun"/>
+                              <text resource-bundle="i8n" key="timeToRun"/>
                             </properties>
                           </component>
                         </children>
@@ -186,7 +186,7 @@
                                 <properties>
                                   <horizontalAlignment value="0"/>
                                   <horizontalTextPosition value="0"/>
-                                  <text resource-bundle="i8n/i8n" key="threadCount"/>
+                                  <text resource-bundle="i8n" key="threadCount"/>
                                 </properties>
                               </component>
                             </children>
@@ -236,7 +236,7 @@
                                 <properties>
                                   <horizontalAlignment value="0"/>
                                   <horizontalTextPosition value="4"/>
-                                  <text resource-bundle="i8n/i8n" key="runIndefinitely"/>
+                                  <text resource-bundle="i8n" key="runIndefinitely"/>
                                 </properties>
                               </component>
                             </children>
@@ -256,7 +256,7 @@
                                 <properties>
                                   <horizontalAlignment value="0"/>
                                   <horizontalTextPosition value="4"/>
-                                  <text resource-bundle="i8n/i8n" key="saveFindings"/>
+                                  <text resource-bundle="i8n" key="saveFindings"/>
                                 </properties>
                               </component>
                             </children>
@@ -290,7 +290,7 @@
                       <grid row="0" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="0" fill="0" indent="0" use-parent-layout="false"/>
                     </constraints>
                     <properties>
-                      <text resource-bundle="i8n/i8n" key="notApplicable"/>
+                      <text resource-bundle="i8n" key="notApplicable"/>
                     </properties>
                   </component>
                 </children>
@@ -309,7 +309,7 @@
                     </constraints>
                     <properties>
                       <horizontalTextPosition value="0"/>
-                      <text resource-bundle="i8n/i8n" key="start"/>
+                      <text resource-bundle="i8n" key="start"/>
                     </properties>
                   </component>
                 </children>
