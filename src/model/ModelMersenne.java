@@ -43,14 +43,10 @@ public class ModelMersenne implements Runnable {
 
         while (ModelFlowControl.latchFindMersenne.getCount() > 0) {
 
-            if (exponent % 2 != 0) {
+            currentNumber = BigInteger.TWO.pow(exponent);
+            currentNumber = currentNumber.subtract(BigInteger.ONE);
 
-                currentNumber = BigInteger.TWO.pow(exponent);
-                currentNumber = currentNumber.subtract(BigInteger.ONE);
-
-                if (isPrime(currentNumber)) ControllerMersenne.resultSet.add(exponent);
-
-            }
+            if (isPrime(currentNumber)) ControllerMersenne.resultSet.add(exponent);
 
             exponent += exponentOffset;
 
