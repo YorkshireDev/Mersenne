@@ -24,7 +24,7 @@
             <properties/>
             <border type="etched"/>
             <children>
-              <scrollpane id="9c27a" binding="scrollPaneListResults">
+              <scrollpane id="9c27a">
                 <constraints>
                   <grid row="0" column="0" row-span="1" col-span="1" vsize-policy="7" hsize-policy="7" anchor="0" fill="3" indent="0" use-parent-layout="false"/>
                 </constraints>
@@ -47,7 +47,7 @@
             <properties/>
             <border type="etched"/>
             <children>
-              <component id="e38a1" class="javax.swing.JLabel" binding="labelResults">
+              <component id="e38a1" class="javax.swing.JLabel">
                 <constraints>
                   <grid row="0" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="0" fill="0" indent="0" use-parent-layout="false"/>
                 </constraints>
@@ -77,7 +77,7 @@
             <properties/>
             <border type="etched"/>
             <children>
-              <component id="1eeb" class="javax.swing.JLabel" binding="labelGithubUrl">
+              <component id="1eeb" class="javax.swing.JLabel">
                 <constraints>
                   <grid row="0" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="0" fill="0" indent="0" use-parent-layout="false"/>
                 </constraints>
@@ -121,7 +121,7 @@
                         <properties/>
                         <border type="none"/>
                         <children>
-                          <component id="1b654" class="javax.swing.JLabel" binding="labelTimeToRun">
+                          <component id="1b654" class="javax.swing.JLabel">
                             <constraints>
                               <grid row="0" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="0" fill="0" indent="0" use-parent-layout="false"/>
                             </constraints>
@@ -179,7 +179,7 @@
                             <properties/>
                             <border type="none"/>
                             <children>
-                              <component id="56219" class="javax.swing.JLabel" binding="labelThreadCount">
+                              <component id="56219" class="javax.swing.JLabel">
                                 <constraints>
                                   <grid row="0" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="0" fill="0" indent="0" use-parent-layout="false"/>
                                 </constraints>

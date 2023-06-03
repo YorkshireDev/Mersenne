@@ -23,8 +23,6 @@ public class ModelSave {
 
         if (! saveDir.canWrite()) return;
 
-        System.out.println("Save!");
-
         for (int exponent : saveData) {
 
             try {

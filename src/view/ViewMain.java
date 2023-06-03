@@ -16,18 +16,13 @@ import java.util.concurrent.Executors;
 public class ViewMain extends JFrame {
 
     private JPanel panelMain;
-    private JLabel labelGithubUrl;
     private JLabel labelTimeRemaining;
     private JButton buttonStartStop;
     private JCheckBox checkBoxRunForever;
     private JCheckBox checkBoxSaveFindings;
-    private JLabel labelTimeToRun;
-    private JLabel labelThreadCount;
     private JTextField textFieldTimeToRun;
     private JTextField textFieldThreadCount;
     private JList<String> listResults;
-    private JLabel labelResults;
-    private JScrollPane scrollPaneListResults;
     private DefaultListModel<String> listResultsModel;
 
     private ResourceBundle resourceBundlei8n;
@@ -114,8 +109,6 @@ public class ViewMain extends JFrame {
     private final Runnable resultListUpdateThread = () -> {
 
         boolean saveFindings = checkBoxSaveFindings.isSelected();
-
-        System.out.println(saveFindings);
 
         ControllerSave controllerSave = null;
 
