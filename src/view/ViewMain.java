@@ -62,7 +62,10 @@ public class ViewMain extends JFrame {
 
         buttonStartStop.addActionListener(actionEvent -> {
 
-            if (ModelFlowControl.latchControllerMersenne.getCount() > 0) return;
+            if (ModelFlowControl.latchControllerMersenne.getCount() > 0) {
+                ModelFlowControl.latchViewMain.countDown();
+                return;
+            }
 
             buttonStartStop.setText(resourceBundleI8n.getString("stop"));
 
@@ -93,10 +96,19 @@ public class ViewMain extends JFrame {
 
     private final Runnable timeRemainingUpdateThread = () -> {
 
+        boolean runForever = checkBoxRunForever.isSelected();
         double timeRemaining = Double.parseDouble(textFieldTimeToRun.getText());
+
+        final int[] runForeverIndex = {0};
+        String[] runForeverAnimation = new String[] {".", "..", "...", "....", ".....", "....", "...", ".."};
 
         while (ModelFlowControl.latchControllerMersenne.getCount() > 0) {
             try {
+                if (runForever) {
+                    SwingUtilities.invokeLater(() -> labelTimeRemaining.setText(runForeverAnimation[runForeverIndex[0]++ % runForeverAnimation.length]));
+                    Thread.sleep(500L);
+                    continue;
+                }
                 int timeRemainingInt = (int) timeRemaining;
                 if (timeRemainingInt >= 0)
                     SwingUtilities.invokeLater(() -> labelTimeRemaining.setText(String.valueOf(timeRemainingInt)));
