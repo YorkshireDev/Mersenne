@@ -1,6 +1,7 @@
 package view;
 
 import controller.ControllerMersenne;
+import controller.ControllerSave;
 import model.ModelFlowControl;
 
 import javax.swing.*;
@@ -112,15 +113,24 @@ public class ViewMain extends JFrame {
 
     private final Runnable resultListUpdateThread = () -> {
 
+        boolean saveFindings = checkBoxSaveFindings.isSelected();
+
+        System.out.println(saveFindings);
+
+        ControllerSave controllerSave = null;
+
+        if (saveFindings) controllerSave = new ControllerSave();
+        Set<Integer> resultSet = new HashSet<>();
+
         listResultsModel.clear();
-        Set<Integer> oldResultSet = new HashSet<>();
 
         while (ModelFlowControl.latchControllerMersenne.getCount() > 0) {
             try {
                 for (int exponent : ControllerMersenne.resultSet) {
-                    if (oldResultSet.contains(exponent)) continue;
-                    listResultsModel.addElement("2^" + exponent + "-1");
-                    oldResultSet.add(exponent);
+                    if (resultSet.contains(exponent)) continue;
+                    SwingUtilities.invokeLater(() -> listResultsModel.addElement("2^" + exponent + "-1"));
+                    resultSet.add(exponent);
+                    if (saveFindings) controllerSave.save(resultSet);
                 }
                 Thread.sleep(500L);
             } catch (InterruptedException e) { throw new RuntimeException(e); }
