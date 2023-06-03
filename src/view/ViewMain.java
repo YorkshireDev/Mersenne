@@ -131,7 +131,11 @@ public class ViewMain extends JFrame {
     private final Runnable timeRemainingUpdateThread = () -> {
 
         boolean runForever = checkBoxRunForever.isSelected();
-        double timeRemaining = Double.parseDouble(textFieldTimeToRun.getText());
+
+        double timeRemaining;
+
+        try { timeRemaining = Double.parseDouble(textFieldTimeToRun.getText()); }
+        catch (NumberFormatException ignored) { timeRemaining = 0.0d; }
 
         final int[] runForeverIndex = {0};
         String[] runForeverAnimation = new String[] {".", "..", "...", "....", ".....", "....", "...", ".."};
