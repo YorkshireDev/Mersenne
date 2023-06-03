@@ -5,7 +5,9 @@ import model.ModelFlowControl;
 
 import javax.swing.*;
 import java.awt.*;
+import java.util.HashSet;
 import java.util.ResourceBundle;
+import java.util.Set;
 import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
@@ -88,11 +90,16 @@ public class ViewMain extends JFrame {
     private final Runnable resultListUpdateThread = () -> {
 
         listResultsModel.clear();
+        Set<Integer> oldResultSet = new HashSet<>();
 
         while (ModelFlowControl.latchControllerMersenne.getCount() > 0) {
             try {
-                listResultsModel.addAll(controllerMersenne.getResultList());
-                Thread.sleep(1000L);
+                for (int exponent : ControllerMersenne.resultSet) {
+                    if (oldResultSet.contains(exponent)) continue;
+                    listResultsModel.addElement("2^" + exponent + "-1");
+                    oldResultSet.add(exponent);
+                }
+                Thread.sleep(500L);
             } catch (InterruptedException e) { throw new RuntimeException(e); }
         }
 

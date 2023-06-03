@@ -3,10 +3,7 @@ package controller;
 import model.ModelFlowControl;
 import model.ModelMersenne;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.NavigableSet;
-import java.util.TreeSet;
+import java.util.concurrent.ConcurrentSkipListSet;
 import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
@@ -15,24 +12,13 @@ public class ControllerMersenne implements Runnable {
 
     private final int threadCount;
     private final ModelMersenne[] modelMersenneArr;
+    public static ConcurrentSkipListSet<Integer> resultSet;
 
     public ControllerMersenne(int threadCount) {
 
         this.threadCount = threadCount;
         modelMersenneArr = new ModelMersenne[threadCount];
-
-    }
-
-    public List<String> getResultList() {
-
-        NavigableSet<String> resultList = new TreeSet<>();
-
-        for (ModelMersenne modelMersenne : modelMersenneArr) {
-            if (modelMersenne == null) continue;
-            resultList.addAll(modelMersenne.getResultList());
-        }
-
-        return new ArrayList<>(resultList);
+        resultSet = new ConcurrentSkipListSet<>();
 
     }
 
@@ -43,8 +29,14 @@ public class ControllerMersenne implements Runnable {
         ModelFlowControl.latchModelMersenne = new CountDownLatch(threadCount);
 
         ExecutorService threadPool = Executors.newFixedThreadPool(threadCount);
+
+        int initialExponent = 1;
+
+        resultSet.add(2);
+
         for (int i = 0; i < threadCount; i++) {
-            modelMersenneArr[i] = new ModelMersenne();
+            modelMersenneArr[i] = new ModelMersenne(initialExponent, threadCount * 2);
+            initialExponent += 2;
             threadPool.submit(modelMersenneArr[i]);
         }
 
