@@ -31,11 +31,13 @@ public class ViewMain extends JFrame {
 
     private ResourceBundle resourceBundlei8n;
 
+    private int timeToRunHistory;
     private ControllerMersenne controllerMersenne;
 
     private void init() {
 
         textFieldTimeToRun.setText("60");
+        timeToRunHistory = Integer.parseInt(textFieldTimeToRun.getText());
         textFieldThreadCount.setText(String.valueOf(Runtime.getRuntime().availableProcessors()));
 
         DefaultListCellRenderer listResultsRenderer = (DefaultListCellRenderer) listResults.getCellRenderer();
@@ -82,6 +84,27 @@ public class ViewMain extends JFrame {
             threadPool.submit(resultListUpdateThread);
             threadPool.submit(timeRemainingUpdateThread);
             threadPool.submit(controllerMersenne);
+
+        });
+
+        checkBoxRunForever.addActionListener(actionEvent -> {
+
+            if (checkBoxRunForever.isSelected()) {
+
+                SwingUtilities.invokeLater(() -> {
+                    timeToRunHistory = Integer.parseInt(textFieldTimeToRun.getText());
+                    textFieldTimeToRun.setText(resourceBundleI8n.getString("notApplicable"));
+                    textFieldTimeToRun.setEnabled(false);
+                });
+
+            } else {
+
+                SwingUtilities.invokeLater(() -> {
+                    textFieldTimeToRun.setText(String.valueOf(timeToRunHistory));
+                    textFieldTimeToRun.setEnabled(true);
+                });
+
+            }
 
         });
 
