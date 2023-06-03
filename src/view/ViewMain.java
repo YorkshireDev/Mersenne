@@ -24,6 +24,7 @@ public class ViewMain extends JFrame {
     private JTextField textFieldThreadCount;
     private JList<String> listResults;
     private JLabel labelResults;
+    private JScrollPane scrollPaneListResults;
     private DefaultListModel<String> listResultsModel;
 
     private ResourceBundle resourceBundlei8n;
@@ -63,7 +64,7 @@ public class ViewMain extends JFrame {
         buttonStartStop.addActionListener(actionEvent -> {
 
             if (ModelFlowControl.latchControllerMersenne.getCount() > 0) {
-                ModelFlowControl.latchViewMain.countDown();
+                ModelFlowControl.latchViewMain.countDown(); // Tell the controller to stop...
                 return;
             }
 
@@ -72,7 +73,7 @@ public class ViewMain extends JFrame {
             ModelFlowControl.latchViewMain = new CountDownLatch(1);
             ModelFlowControl.latchControllerMersenne = new CountDownLatch(1);
 
-            controllerMersenne = new ControllerMersenne();
+            controllerMersenne = new ControllerMersenne(Integer.parseInt(textFieldThreadCount.getText()));
 
             ExecutorService threadPool = Executors.newFixedThreadPool(3);
 
@@ -86,8 +87,11 @@ public class ViewMain extends JFrame {
 
     private final Runnable resultListUpdateThread = () -> {
 
+        listResultsModel.clear();
+
         while (ModelFlowControl.latchControllerMersenne.getCount() > 0) {
             try {
+                listResultsModel.addAll(controllerMersenne.getResultList());
                 Thread.sleep(1000L);
             } catch (InterruptedException e) { throw new RuntimeException(e); }
         }
@@ -114,7 +118,7 @@ public class ViewMain extends JFrame {
                     SwingUtilities.invokeLater(() -> labelTimeRemaining.setText(String.valueOf(timeRemainingInt)));
                 Thread.sleep(500L);
                 timeRemaining -= 0.5d;
-                if (timeRemainingInt <= 0) ModelFlowControl.latchViewMain.countDown();
+                if (timeRemainingInt <= 0) ModelFlowControl.latchViewMain.countDown(); // Tell the controller to stop...
             } catch (InterruptedException e) { throw new RuntimeException(e); }
         }
 
