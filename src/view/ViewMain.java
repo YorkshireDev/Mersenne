@@ -31,7 +31,7 @@ public class ViewMain extends JFrame {
 
         setContentPane(panelMain);
         setTitle("Mersenne");
-        setPreferredSize(new Dimension(640, 480));
+        setPreferredSize(new Dimension(560, 302));
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         pack();
         setLocationRelativeTo(null);
