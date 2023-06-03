@@ -10,7 +10,7 @@ import java.util.Set;
 public class ModelSave {
 
     private String calculate(int exponent) {
-        return BigInteger.TWO.pow(exponent).toString();
+        return BigInteger.TWO.pow(exponent).subtract(BigInteger.ONE).toString();
     }
 
     public void save(Set<Integer> saveData) {
