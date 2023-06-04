@@ -6,8 +6,7 @@ import java.math.BigInteger;
 
 public class ModelMersenne implements Runnable {
 
-    private static final BigInteger THREE = BigInteger.valueOf(3);
-    private static final BigInteger SIX = BigInteger.valueOf(6);
+    private static final BigInteger FOUR = BigInteger.valueOf(4);
 
     private final int initialExponent;
     private final int exponentOffset;
@@ -31,20 +30,14 @@ public class ModelMersenne implements Runnable {
         return exponent;
     }
 
-    private boolean isPrime(BigInteger n) {
+    private boolean isPrime(int exponent, BigInteger nCheck) {
 
-        if(n.compareTo(BigInteger.TWO) < 0) return false;
-        if(n.compareTo(BigInteger.TWO) == 0 || n.compareTo(THREE) == 0) return true;
-        if (n.mod(BigInteger.TWO).compareTo(BigInteger.ZERO) == 0 || n.mod(THREE).compareTo(BigInteger.ZERO) == 0) return false;
+        BigInteger sNumber = FOUR.mod(nCheck);
 
-        BigInteger nSqrt = n.sqrt().subtract(BigInteger.ONE);
+        for (int i = 1; i < exponent - 1; i++)
+            sNumber = (sNumber.multiply(sNumber).subtract(BigInteger.TWO)).mod(nCheck);
 
-        for (BigInteger i = SIX; i.compareTo(nSqrt) <= 0; i = i.add(SIX)) {
-            if (ModelFlowControl.latchFindMersenne.getCount() == 0) break;
-            if (n.mod(i.subtract(BigInteger.ONE)).compareTo(BigInteger.ZERO) == 0 || n.mod(i.add(BigInteger.ONE)).compareTo(BigInteger.ZERO) == 0) return false;
-        }
-
-        return true;
+        return sNumber.compareTo(BigInteger.ZERO) == 0;
 
     }
 
@@ -60,7 +53,7 @@ public class ModelMersenne implements Runnable {
             currentNumber = BigInteger.TWO.pow(exponent);
             currentNumber = currentNumber.subtract(BigInteger.ONE);
 
-            if (isPrime(currentNumber)) ControllerMersenne.resultSet.add(exponent);
+            if (isPrime(exponent, currentNumber)) ControllerMersenne.resultSet.add(exponent);
 
             exponent += exponentOffset;
             eProcessed++;
