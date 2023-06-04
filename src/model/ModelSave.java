@@ -10,7 +10,22 @@ import java.util.Set;
 public class ModelSave {
 
     private String calculate(int exponent) {
-        return BigInteger.TWO.pow(exponent).subtract(BigInteger.ONE).toString();
+
+        String nString = BigInteger.TWO.pow(exponent).subtract(BigInteger.ONE).toString();
+
+        int nStringLength = nString.length();
+
+        if (nStringLength <= 128) return nString;
+
+        StringBuilder nStringWordWrap = new StringBuilder();
+
+        for (int i = 0; i < nString.length(); i++) {
+            if (i > 0 && i % 128 == 0) nStringWordWrap.append(System.lineSeparator());
+            nStringWordWrap.append(nString.charAt(i));
+        }
+
+        return nStringWordWrap.toString();
+
     }
 
     public void save(Set<Integer> saveData) {
@@ -37,7 +52,7 @@ public class ModelSave {
                 writer.write("    :    ");
                 writer.newLine();
                 writer.newLine();
-                writer.write("Calculated: " + calculate(exponent));
+                writer.write(calculate(exponent));
 
                 writer.flush();
 
