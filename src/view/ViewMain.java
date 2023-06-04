@@ -106,6 +106,12 @@ public class ViewMain extends JFrame {
 
     }
 
+    private void showMessage(String titleText, String messageText, int messageType) {
+
+        SwingUtilities.invokeLater(() -> JOptionPane.showMessageDialog(this, messageText, titleText, messageType));
+
+    }
+
     private final Runnable resultListUpdateThread = () -> {
 
         boolean saveFindings = checkBoxSaveFindings.isSelected();
@@ -161,6 +167,16 @@ public class ViewMain extends JFrame {
 
         SwingUtilities.invokeLater(() -> buttonStartStop.setText(resourceBundlei8n.getString("start")));
         SwingUtilities.invokeLater(() -> labelTimeRemaining.setText(resourceBundlei8n.getString("notApplicable")));
+
+        long[] statistics = controllerMersenne.getStatistics();
+
+        String messageText = "Total Processed: " + statistics[0] + System.lineSeparator() +
+                System.lineSeparator() +
+                "Processed Per Second: " + statistics[1] + System.lineSeparator() +
+                System.lineSeparator() +
+                "Largest Exponent Processed: 2^" + statistics[2] + "-1";
+
+        showMessage("Benchmark Result", messageText, JOptionPane.INFORMATION_MESSAGE);
 
     };
 

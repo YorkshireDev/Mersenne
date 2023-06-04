@@ -12,9 +12,23 @@ public class ModelMersenne implements Runnable {
     private final int initialExponent;
     private final int exponentOffset;
 
+    private int exponent;
+
+    private long eProcessed;
+
     public ModelMersenne(int initialExponent, int exponentOffset) {
         this.initialExponent = initialExponent;
         this.exponentOffset = exponentOffset;
+        exponent = 0;
+        eProcessed = 0L;
+    }
+
+    public long getEProcessed() {
+        return eProcessed;
+    }
+
+    public int getLargestEProcessed() {
+        return exponent;
     }
 
     private boolean isPrime(BigInteger n) {
@@ -37,7 +51,7 @@ public class ModelMersenne implements Runnable {
     @Override
     public void run() {
 
-        int exponent = initialExponent;
+        exponent = initialExponent;
 
         BigInteger currentNumber;
 
@@ -49,6 +63,7 @@ public class ModelMersenne implements Runnable {
             if (isPrime(currentNumber)) ControllerMersenne.resultSet.add(exponent);
 
             exponent += exponentOffset;
+            eProcessed++;
 
         }
 

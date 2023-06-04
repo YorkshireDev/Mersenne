@@ -14,12 +14,23 @@ public class ControllerMersenne implements Runnable {
     private final ModelMersenne[] modelMersenneArr;
     public static ConcurrentSkipListSet<Integer> resultSet;
 
+    long eProcessedTotal;
+    long eProcessedPerSecond;
+    long eLargestProcessed;
+
     public ControllerMersenne(int threadCount) {
 
         this.threadCount = threadCount;
         modelMersenneArr = new ModelMersenne[threadCount];
         resultSet = new ConcurrentSkipListSet<>();
+        eProcessedTotal = 0L;
+        eProcessedPerSecond = 0L;
+        eLargestProcessed = 0L;
 
+    }
+
+    public long[] getStatistics() {
+        return new long[] {eProcessedTotal, eProcessedPerSecond, eLargestProcessed};
     }
 
     @Override
@@ -34,6 +45,11 @@ public class ControllerMersenne implements Runnable {
 
         resultSet.add(2);
 
+        long sTime;
+        long eTime;
+
+        sTime = System.nanoTime();
+
         for (int i = 0; i < threadCount; i++) {
             modelMersenneArr[i] = new ModelMersenne(initialExponent, threadCount * 2);
             initialExponent += 2;
@@ -45,6 +61,18 @@ public class ControllerMersenne implements Runnable {
             ModelFlowControl.latchFindMersenne.countDown(); // Tell the mersenne finders to stop...
             ModelFlowControl.latchModelMersenne.await(); // Wait for them to stop...
         } catch (InterruptedException e) { throw new RuntimeException(e); }
+
+        eTime = System.nanoTime() - sTime;
+        eTime /= 1_000_000_000L;
+
+        if (eTime <= 0) eTime = 1L;
+
+        for (ModelMersenne modelMersenne : modelMersenneArr) {
+            eProcessedTotal += modelMersenne.getEProcessed();
+            if (modelMersenne.getLargestEProcessed() > eLargestProcessed) eLargestProcessed = modelMersenne.getLargestEProcessed();
+        }
+
+        eProcessedPerSecond = eProcessedTotal / eTime;
 
         ModelFlowControl.latchControllerMersenne.countDown(); // Tell the signaler that you've finished...
 
