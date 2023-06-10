@@ -23,6 +23,7 @@ public class ViewMain extends JFrame {
     private JTextField textFieldTimeToRun;
     private JTextField textFieldThreadCount;
     private JList<String> listResults;
+    private JTextField textFieldStartingExponent;
     private DefaultListModel<String> listResultsModel;
 
     private ResourceBundle resourceBundlei8n;
@@ -35,6 +36,7 @@ public class ViewMain extends JFrame {
         textFieldTimeToRun.setText("60");
         timeToRunHistory = Integer.parseInt(textFieldTimeToRun.getText());
         textFieldThreadCount.setText(String.valueOf(Runtime.getRuntime().availableProcessors()));
+        textFieldStartingExponent.setText("1");
 
         DefaultListCellRenderer listResultsRenderer = (DefaultListCellRenderer) listResults.getCellRenderer();
         listResultsRenderer.setHorizontalAlignment(SwingConstants.CENTER);
@@ -50,7 +52,7 @@ public class ViewMain extends JFrame {
 
         setContentPane(panelMain);
         setTitle("Mersenne");
-        setPreferredSize(new Dimension(560, 302));
+        setPreferredSize(new Dimension(560, 353));
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         pack();
         setLocationRelativeTo(null);
@@ -83,12 +85,21 @@ public class ViewMain extends JFrame {
                 return;
             }
 
+            int startingExponent = 1;
+
+            try {
+                startingExponent = Integer.parseInt(textFieldStartingExponent.getText());
+                if (startingExponent % 2 == 0) startingExponent++;
+            } catch (NumberFormatException ignored) {}
+
+            textFieldStartingExponent.setText(String.valueOf(startingExponent));
+
             buttonStartStop.setText(resourceBundleI8n.getString("stop"));
 
             ModelFlowControl.latchViewMain = new CountDownLatch(1);
             ModelFlowControl.latchControllerMersenne = new CountDownLatch(1);
 
-            controllerMersenne = new ControllerMersenne(Integer.parseInt(textFieldThreadCount.getText()));
+            controllerMersenne = new ControllerMersenne(startingExponent, Integer.parseInt(textFieldThreadCount.getText()));
 
             ExecutorService threadPool = Executors.newFixedThreadPool(3);
 

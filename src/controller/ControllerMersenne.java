@@ -7,6 +7,7 @@ import java.util.concurrent.*;
 
 public class ControllerMersenne implements Runnable {
 
+    private int initialExponent;
     private final int threadCount;
     private final ModelMersenne[] modelMersenneArr;
     public static ConcurrentSkipListSet<Integer> resultSet;
@@ -15,8 +16,9 @@ public class ControllerMersenne implements Runnable {
     long eProcessedPerSecond;
     long eLargestProcessed;
 
-    public ControllerMersenne(int threadCount) {
+    public ControllerMersenne(int initialExponent, int threadCount) {
 
+        this.initialExponent = initialExponent;
         this.threadCount = threadCount;
         modelMersenneArr = new ModelMersenne[threadCount];
         resultSet = new ConcurrentSkipListSet<>();
@@ -38,9 +40,10 @@ public class ControllerMersenne implements Runnable {
 
         ExecutorService threadPool = Executors.newFixedThreadPool(threadCount);
 
-        int initialExponent = 3;
-
-        if (initialExponent == 3) resultSet.add(2);
+        if (initialExponent < 3) {
+            initialExponent = 3;
+            resultSet.add(2);
+        }
 
         long sTime;
         long eTime;
