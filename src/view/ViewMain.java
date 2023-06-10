@@ -44,6 +44,9 @@ public class ViewMain extends JFrame {
         checkBoxSaveFindings.setSelected(true);
 
         ModelFlowControl.latchControllerMersenne = new CountDownLatch(0);
+        ModelFlowControl.latchModelMersenne = new CountDownLatch(0);
+        ModelFlowControl.latchFindMersenne = new CountDownLatch(0);
+        ModelFlowControl.latchViewMain = new CountDownLatch(0);
 
         setContentPane(panelMain);
         setTitle("Mersenne");
@@ -65,6 +68,18 @@ public class ViewMain extends JFrame {
 
             if (ModelFlowControl.latchControllerMersenne.getCount() > 0) {
                 ModelFlowControl.latchViewMain.countDown(); // Tell the controller to stop...
+                return;
+            }
+
+            long threadCountStillRunning = ModelFlowControl.latchModelMersenne.getCount();
+
+            if (threadCountStillRunning > 0) {
+                String messageText =
+                        "Previous run is still waiting for " +
+                                threadCountStillRunning +
+                                (threadCountStillRunning == 1 ? " thread" : " threads") +
+                                " to stop, please be patient!";
+                showMessage("Information", messageText, JOptionPane.WARNING_MESSAGE);
                 return;
             }
 

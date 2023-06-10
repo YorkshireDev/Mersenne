@@ -3,10 +3,7 @@ package controller;
 import model.ModelFlowControl;
 import model.ModelMersenne;
 
-import java.util.concurrent.ConcurrentSkipListSet;
-import java.util.concurrent.CountDownLatch;
-import java.util.concurrent.ExecutorService;
-import java.util.concurrent.Executors;
+import java.util.concurrent.*;
 
 public class ControllerMersenne implements Runnable {
 
@@ -41,9 +38,9 @@ public class ControllerMersenne implements Runnable {
 
         ExecutorService threadPool = Executors.newFixedThreadPool(threadCount);
 
-        int initialExponent = 1;
+        int initialExponent = 3;
 
-        resultSet.add(2);
+        if (initialExponent == 3) resultSet.add(2);
 
         long sTime;
         long eTime;
@@ -56,10 +53,12 @@ public class ControllerMersenne implements Runnable {
             threadPool.submit(modelMersenneArr[i]);
         }
 
+        threadPool.shutdown();
+
         try {
             ModelFlowControl.latchViewMain.await(); // Wait for signal to stop...
             ModelFlowControl.latchFindMersenne.countDown(); // Tell the mersenne finders to stop...
-            ModelFlowControl.latchModelMersenne.await(); // Wait for them to stop...
+            ModelFlowControl.latchModelMersenne.await(8, TimeUnit.SECONDS); // Wait for them to stop...
         } catch (InterruptedException e) { throw new RuntimeException(e); }
 
         eTime = System.nanoTime() - sTime;

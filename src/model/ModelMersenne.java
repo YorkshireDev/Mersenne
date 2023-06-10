@@ -34,9 +34,11 @@ public class ModelMersenne implements Runnable {
 
         BigInteger sNumber = FOUR.mod(nCheck);
 
-        for (int i = 1; i < exponent - 1; i++)
+        for (int i = 1; i < exponent - 1; i++) {
+            if (ModelFlowControl.latchFindMersenne.getCount() == 0) break;
             sNumber = (sNumber.multiply(sNumber).subtract(BigInteger.TWO)).mod(nCheck);
-
+        }
+        
         return sNumber.compareTo(BigInteger.ZERO) == 0;
 
     }
@@ -50,10 +52,11 @@ public class ModelMersenne implements Runnable {
 
         while (ModelFlowControl.latchFindMersenne.getCount() > 0) {
 
-            currentNumber = BigInteger.TWO.pow(exponent);
-            currentNumber = currentNumber.subtract(BigInteger.ONE);
+            currentNumber = BigInteger.TWO.pow(exponent).subtract(BigInteger.ONE);
 
             if (isPrime(exponent, currentNumber)) ControllerMersenne.resultSet.add(exponent);
+
+            if (ModelFlowControl.latchFindMersenne.getCount() == 0) continue;
 
             exponent += exponentOffset;
             eProcessed++;
