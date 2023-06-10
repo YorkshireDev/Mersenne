@@ -6,6 +6,7 @@ import model.ModelFlowControl;
 
 import javax.swing.*;
 import java.awt.*;
+import java.text.DecimalFormat;
 import java.util.HashSet;
 import java.util.ResourceBundle;
 import java.util.Set;
@@ -194,13 +195,20 @@ public class ViewMain extends JFrame {
         SwingUtilities.invokeLater(() -> buttonStartStop.setText(resourceBundlei8n.getString("start")));
         SwingUtilities.invokeLater(() -> labelTimeRemaining.setText(resourceBundlei8n.getString("notApplicable")));
 
-        long[] statistics = controllerMersenne.getStatistics();
+        double[] statistics = controllerMersenne.getStatistics();
 
-        String messageText = "Total Processed: " + statistics[0] + System.lineSeparator() +
+        long eProcessedTotal = (long) statistics[0];
+        double eProcessedPerTime = statistics[1];
+        long eTimeUnit = (long) statistics[2];
+        long eLargestProcessed = (long) statistics[3];
+
+        String processedPerTime = "Processed Per " + (eTimeUnit == 0L ? "Second" : eTimeUnit == 1L ? "Minute" : "Hour") + ": ";
+
+        String messageText = "Total Processed: " + eProcessedTotal + System.lineSeparator() +
                 System.lineSeparator() +
-                "Processed Per Second: " + statistics[1] + System.lineSeparator() +
+                processedPerTime + new DecimalFormat("#.####").format(eProcessedPerTime) + System.lineSeparator() +
                 System.lineSeparator() +
-                "Largest Exponent Processed: 2^" + statistics[2] + "-1";
+                "Largest Exponent Processed: 2^" + eLargestProcessed + "-1";
 
         showMessage("Benchmark Result", messageText, JOptionPane.INFORMATION_MESSAGE);
 

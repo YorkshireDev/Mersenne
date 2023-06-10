@@ -13,7 +13,8 @@ public class ControllerMersenne implements Runnable {
     public static ConcurrentSkipListSet<Integer> resultSet;
 
     long eProcessedTotal;
-    long eProcessedPerSecond;
+    double eProcessedPerTime;
+    long eTimeUnit;
     long eLargestProcessed;
 
     public ControllerMersenne(int initialExponent, int threadCount) {
@@ -23,13 +24,14 @@ public class ControllerMersenne implements Runnable {
         modelMersenneArr = new ModelMersenne[threadCount];
         resultSet = new ConcurrentSkipListSet<>();
         eProcessedTotal = 0L;
-        eProcessedPerSecond = 0L;
+        eProcessedPerTime = 0L;
+        eTimeUnit = 0L; // 0 = Second, 1 = Minute, 2 = Hour
         eLargestProcessed = 0L;
 
     }
 
-    public long[] getStatistics() {
-        return new long[] {eProcessedTotal, eProcessedPerSecond, eLargestProcessed};
+    public double[] getStatistics() {
+        return new double[] { eProcessedTotal, eProcessedPerTime, eTimeUnit, eLargestProcessed };
     }
 
     @Override
@@ -45,8 +47,8 @@ public class ControllerMersenne implements Runnable {
             resultSet.add(2);
         }
 
-        long sTime;
-        long eTime;
+        double sTime;
+        double eTime;
 
         sTime = System.nanoTime();
 
@@ -65,7 +67,7 @@ public class ControllerMersenne implements Runnable {
         } catch (InterruptedException e) { throw new RuntimeException(e); }
 
         eTime = System.nanoTime() - sTime;
-        eTime /= 1_000_000_000L;
+        eTime /= 1_000_000_000.0d;
 
         if (eTime <= 0) eTime = 1L;
 
@@ -74,7 +76,17 @@ public class ControllerMersenne implements Runnable {
             if (modelMersenne.getLargestEProcessed() > eLargestProcessed) eLargestProcessed = modelMersenne.getLargestEProcessed();
         }
 
-        eProcessedPerSecond = eProcessedTotal / eTime;
+        eProcessedPerTime = (double) eProcessedTotal / eTime;
+
+        if (eProcessedPerTime < 1.0d) {
+            eProcessedPerTime *= 60.0d;
+            eTimeUnit = 1L;
+        }
+
+        if (eProcessedPerTime < 1.0d) {
+            eProcessedPerTime *= 60.0d;
+            eTimeUnit = 2L;
+        }
 
         ModelFlowControl.latchControllerMersenne.countDown(); // Tell the signaler that you've finished...
 
